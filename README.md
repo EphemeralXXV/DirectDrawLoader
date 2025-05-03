@@ -13,7 +13,7 @@ which returns a pointer to a `RenderPluginAPI` structure containing the user's i
 - `bool ExitRequested()` [optional] — Returns the exit request state based on a user-defined condition (e.g. a hotkey press);
 - `void Shutdown()` [optional] — Called during DLL unload; use for cleanup.
 
-The interface is defined in `render_interface.h`.
+The interface is defined in `render_interface.h`. Naturally, in order to compile a plugin, you must include this header file.
 
 ## Installation guide
 1. Download the latest release of *DirectDraw Loader*.
