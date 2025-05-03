@@ -27,7 +27,7 @@ The interface is defined in `render_interface.h`. Naturally, in order to compile
 
 6. Run `DDrawLoader.exe` as an administrator.
    
-**Note:** Antivirus software may flag the executable due to its behavior (DLL injection, hooking, etc.), so make sure to add it as an exception. If preferred, you can use a third-party injector (e.g., Xenos) and inject the DLL manually; the executable simply automates this process.
+**Note:** Antivirus software may flag the executable due to its behavior (DLL injection, hooking, etc.), so make sure to add it as an exception. If preferred, you can use a third-party injector (e.g., *Xenos*) and inject the DLL manually; the executable simply automates this process.
 
 ## Tested applications
 The idea for this program came from attempting to create a mod menu in the 1999 video game Mobil 1 Rally Championship which relies heavily on DirectDraw. As such, it is the one application guaranteed to be supported. Tests on a few other video games have also been performed. Below is a brief rundown.
