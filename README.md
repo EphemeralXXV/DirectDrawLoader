@@ -41,6 +41,7 @@ The idea for this program came from attempting to create a mod menu in the 1999 
 | *RollerCoaster Tycoon 2*             | 2002 | ❗❗❗ No, but might be patched       | Hook incomplete (`DirectDrawCreate` is never called). Possibly a highly challenging fix, as it's an early-stage call. |                                                |
 | *Tzar: The Burden of the Crown*      | 2000 | ❗❗❗ No, but might be patched       | Hook incomplete (`DirectDrawCreate` is never called). Possibly a highly challenging fix, as it's an early-stage call. |                                                |
 | *Need for Speed II: Special Edition* | 1997 | ❌ No, and likely won't be patched | Cannot hook (fails to find `ddraw.dll`)                                                                               |                                                |
+
 All tests carried out on Windows 10 Pro x64.
 
 ## Limitations
