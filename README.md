@@ -3,13 +3,16 @@
 
 ## Plugins
 **Plugins** are user-provided DLL files that expose a minimal `RenderPluginAPI` interface. These are dynamically loaded to overlay custom graphics or perform per-frame logic. All render plugins must export a single function:
-`__declspec(dllexport) RenderPluginAPI* GetRenderPlugin();`.
+
+`__declspec(dllexport) RenderPluginAPI* GetRenderPlugin()`
+
 which returns a pointer to a `RenderPluginAPI` structure containing the user's implementation of supplied callback functions:
 - `void Init()` [optional] — Called once after plugin load; use for setup (e.g., loading assets).
 - `void Draw(HDC hdc)` [required] — Draws custom graphics to the provided device context (called each frame).
 - `void Update()` [optional] — Polled at ~60 Hz; useful for handling input or time-based updates.
 - `bool ExitRequested()` [optional] — Returns the exit request state based on a user-defined condition (e.g. a hotkey press);
 - `void Shutdown()` [optional] — Called during DLL unload; use for cleanup.
+
 The interface is defined in `render_interface.h`.
 
 ## Installation guide
@@ -20,6 +23,7 @@ The interface is defined in `render_interface.h`.
    4.1. Under `[Target]`, set `exePath` to the path of your target application (can be absolute or relative) — for example `C:/Program Files/SampleDDrawApp/app.exe`.
    4.2. Under `[Plugin]`, set `dllName` to the name of your plugin (including the `.dll` extension) — for example, `plugin.dll`.
 6. Run `DDrawLoader.exe` as an administrator.
+   
 **Note:** Antivirus software may flag the executable due to its behavior (DLL injection, hooking, etc.), so make sure to add it as an exception. If preferred, you can use a third-party injector (e.g., Xenos) and inject the DLL manually; the executable simply automates this process.
 
 ## Tested applications
@@ -47,7 +51,7 @@ All tests carried out on Windows 10 Pro x64.
 Planned improvements may address some of these limitations over time, depending on interest and feasibility.
 
 ## Acknowledgements
-- *DirectDraw Loader* relies on the [https://github.com/TsudaKageyu/minhook](*MinHook*) library by TsudaKageyu for API hooking.
+- *DirectDraw Loader* relies on the [*MinHook*](https://github.com/TsudaKageyu/minhook) library by TsudaKageyu for API hooking.
 - Portions of the source code and project structure based on the following YouTube videos:
-  - [https://www.youtube.com/watch?v=vF5fzIDUJVw](*INTERNAL IMGUI MENU (DIRECTX 9)*) by cazz.
-  - [https://www.youtube.com/watch?v=BIZyxja3Qls](*External Overlay in C++ | Works For ANY Game*) by CasualGamer.
+  - [*INTERNAL IMGUI MENU (DIRECTX 9)*](https://www.youtube.com/watch?v=vF5fzIDUJVw) by cazz.
+  - [*External Overlay in C++ | Works For ANY Game*](https://www.youtube.com/watch?v=BIZyxja3Qls) by CasualGamer.
