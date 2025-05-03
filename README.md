@@ -20,8 +20,11 @@ The interface is defined in `render_interface.h`. Naturally, in order to compile
 2. Unpack the archive anywhere on your disk.
 3. Place your DLL plugin in `/DDrawLoader/plugins/`.
 4. Open the `config.ini` file in the *DirectDraw Loader* root folder:
+
    4.1. Under `[Target]`, set `exePath` to the path of your target application (can be absolute or relative) — for example `C:/Program Files/SampleDDrawApp/app.exe`.
+   
    4.2. Under `[Plugin]`, set `dllName` to the name of your plugin (including the `.dll` extension) — for example, `plugin.dll`.
+
 6. Run `DDrawLoader.exe` as an administrator.
    
 **Note:** Antivirus software may flag the executable due to its behavior (DLL injection, hooking, etc.), so make sure to add it as an exception. If preferred, you can use a third-party injector (e.g., Xenos) and inject the DLL manually; the executable simply automates this process.
