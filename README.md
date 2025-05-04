@@ -54,6 +54,139 @@ All tests carried out on Windows 10 Pro x64.
 - Applications running in windowed mode or using wrappers such as *DDrawCompat*, *dgVoodoo*, or *DxWnd* are likely incompatible. Some exceptions exist, but broad support is not guaranteed at this stage.
 Planned improvements may address some of these limitations over time, depending on interest and feasibility.
 
+## Build guide
+The project can be built using Visual Studio Code, 32-bit MingW32 and G++ with the following configuration:
+
+- `/.vscode/c_cpp_properties.json`:
+```
+{
+    "configurations": [
+      {
+        "name": "Windows",
+        "includePath": [
+          "${workspaceFolder}/src",
+          "${workspaceFolder}/ext/imhook",
+          "${workspaceFolder}/ext/imhook/hde"
+        ],
+        "defines": [],
+        "compilerPath": "C:/msys64/ucrt64/bin/g++",
+        "cStandard": "c11",
+        "cppStandard": "c++17",
+        "intelliSenseMode": "windows-gcc-x64"
+      }
+    ],
+    "version": 4
+  }
+```
+- `/.vscode/launch.json`:
+```
+{
+    "version": "0.2.0",
+    "configurations": []
+}
+```
+- `/.vscode/tasks.json`:
+```
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build DDrawLoader DLL",
+            "type": "shell",
+            "command": "i686-w64-mingw32-g++",
+            "args": [
+                "-m32",                        // <<< THIS forces 32-bit mode
+                "-shared", "-o", "${workspaceFolder}/build/ddrawloader.dll",
+
+                "${workspaceFolder}/src/dllmain.cpp",
+                "${workspaceFolder}/src/hooks.cpp",
+                "${workspaceFolder}/src/config.cpp",
+
+                "${workspaceFolder}/ext/imhook/buffer.c",
+                "${workspaceFolder}/ext/imhook/hook.c",
+                "${workspaceFolder}/ext/imhook/trampoline.c",
+                "${workspaceFolder}/ext/imhook/hde/hde32.c",
+                "${workspaceFolder}/ext/imhook/hde/hde64.c",
+
+                "-I", "${workspaceFolder}/src",
+                "-I", "${workspaceFolder}/ext/imhook",
+                "-I", "${workspaceFolder}/ext/imhook/hde",
+
+                "-static-libgcc",
+                "-static-libstdc++",
+                "-mwindows"
+            ],
+            "group": "build",
+            "problemMatcher": ["$gcc"],
+            "detail": "Build the project DLL"
+        },
+        {
+            "label": "Compile Resource",
+            "type": "shell",
+            "command": "windres",
+            "args": [
+                "${workspaceFolder}/resources/resources.rc",
+                "-O", "coff",
+                "-o", "${workspaceFolder}/resources/resources.res"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Build Launcher",
+            "type": "shell",
+            "command": "i686-w64-mingw32-g++",
+            "args": [
+                "-m32",
+                "-o", "${workspaceFolder}/build/DDrawLoader.exe",
+
+                "${workspaceFolder}/src/launcher.cpp",
+                "${workspaceFolder}/src/config.cpp",
+                "${workspaceFolder}/resources/resources.res",
+
+                "-I", "${workspaceFolder}/src",
+                
+                "-static-libgcc",
+                "-static-libstdc++",
+                "-lshlwapi",
+                "-mwindows"
+            ],
+            "group": "build",
+            "problemMatcher": ["$gcc"],
+            "dependsOn": [
+              "Compile Resource"
+            ],
+            "detail": "Build the project launcher"
+        },
+        {
+            "label": "Build All",
+            "dependsOn": [
+                "Build DDrawLoader DLL",
+                "Build Launcher"
+            ],
+            "dependsOrder": "sequence",
+            "group": "build"
+        },
+        {
+            "label": "Build All and Organize",
+            "type": "shell",
+            "command": "cmd",
+            "args": [
+                "/c",
+                "if not exist build\\DDrawLoader\\plugins mkdir build\\DDrawLoader\\plugins && move build\\ddrawloader.dll build\\DDrawLoader\\ddrawloader.dll && move build\\DDrawLoader.exe build\\DDrawLoader\\DDrawLoader.exe && copy src\\config.ini build\\DDrawLoader\\config.ini"
+            ],
+            "problemMatcher": [],
+            "dependsOn": [
+                "Build All"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}
+```
+
 ## Acknowledgements
 - *DirectDraw Loader* relies on the [*MinHook*](https://github.com/TsudaKageyu/minhook) library by TsudaKageyu for API hooking.
 - Portions of the source code and project structure based on the following YouTube videos:
